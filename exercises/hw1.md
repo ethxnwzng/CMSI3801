@@ -24,8 +24,16 @@ Object oriented programming today describes a programming paradigm that emphasiz
 
 
 6. What characters comprise the following string: ᐊᐃᓐᖓᐃ? List the code point and name of each character that appears, in order. What is the meaning of the string, assuming its intended context?
+ᐊ = U+140A = CANADIAN SYLLABICS A
+ᐃ = U+1403 = CANADIAN SYLLABICS I
+ᓐ = U+14D0 = CANADIAN SYLLABICS N
+ᖓ = U+15D3 = CANADIAN SYLLABICS NGA
+ᐃ = U+1403 = CANADIAN SYLLABICS I
+this string spells out ainngi which means no or not. Negation.
 
 7. What is the difference between control flow and concurrency?
+control flow is the order which instructions are exectuted. this is the path of exectution. While concurrency is the ability to execute multiple proccesses simultaneously. concurrency is about managing multiple paths at once or in one time.
+
 8. How do machine and assembly languages differ? Give an example that is different from the one seen in class.
 
 9. We saw, in class, a function that computed either or depending on whether 
