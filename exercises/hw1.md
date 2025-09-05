@@ -42,3 +42,4 @@ is even or odd. Write this function in a programming language not seen in class.
 10. The language Verse is billed as a functional-logic programming languages. Write a short paragraph about Verse, including its creator, year of creation, why it was created, and what exactly “functional-logic” means.
 
 Westley - https://docs.google.com/document/d/1Tpttas4tEG7jjdJajyxvpcRQkvyYT2gChDd_-4r-E7g/edit?tab=t.0
+Nick - https://docs.google.com/document/d/1_61HE3RPuk8KHhhK9X9Jm4z7j6BNnx8DQzP28jo1m2w/edit?tab=t.0
