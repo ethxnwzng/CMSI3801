@@ -34,12 +34,41 @@ this string spells out ainngi which means no or not. Negation.
 7. What is the difference between control flow and concurrency?
 control flow is the order which instructions are exectuted. this is the path of exectution. While concurrency is the ability to execute multiple proccesses simultaneously. concurrency is about managing multiple paths at once or in one time.
 
+Control flow is the sequential order that a program executes instructions in, determning which statement will run next in the code. Concurrency is the computers ability to execute mulitple processes at the same time, allowing better runtime because multiple tasks can be completed together. 
+
 8. How do machine and assembly languages differ? Give an example that is different from the one seen in class.
 
-9. We saw, in class, a function that computed either or depending on whether 
-is even or odd. Write this function in a programming language not seen in class.
+Machine language is made up of binary, the lowest level of information for the computer that the CPU executes directly from. Assembly language is a higher up language that uses human mnemonics and symbols to give meaning to the lower level computer-understood information. An assembler is required to take the human understood written code and make it understandable to the machine. 
+
+ex: 
+To add two numbers in machine language in 8-bit: 00000011 00000001 00000010
+In assembly language: ADD AX, BX
+
+9. We saw, in class, a function that computed either or depending on whether is even or odd. Write this function in a programming language not seen in class.
+
+C#:
+using System;
+
+class Program 
+{
+    static string EvenOrOdd(int n) 
+    {
+        return n % 2 == 0 ? "even" : "odd";
+    }
+    
+    static void Main() 
+    {
+        Console.WriteLine(EvenOrOdd(4));  
+    }
+}
 
 10. The language Verse is billed as a functional-logic programming languages. Write a short paragraph about Verse, including its creator, year of creation, why it was created, and what exactly “functional-logic” means.
 
+Verse is a language created about Epic Games in 2023 for using Unreal Engine. The language was made under Tim Sweeney and his team including Simon Peyton Jones, Lennart Augustsson...It was created to be a better expressive scripting solution for interactive, real-time quick update games and experiences (Fortnite creative). The creators also extended the capability of the language to be used for metaverse (VR-chat) like enviornments with real-time like interactions. "Functional logic" in the Verse language states that functional programming: bringing features like higher-order functions, immutability for variables, and static coding, and logic programming: concepts such as equality constraints and backtracking allows for programmers to reason about their systems similar to how one does mathematics (article says "lambda calculus"). Overall, Verse is a combination of functional and logic programming made by Epic Games for safe and highly concurrent scripting for game developer. 
+
+Source: https://simon.peytonjones.org/assets/pdfs/verse-March23.pdf?utm_source=chatgpt.com
+
+
+Ethan-https://docs.google.com/document/d/1xNQtGTHIpq0Kb9Az1-OXM18JjQUBXed1C6VEPSY4z-Y/edit?tab=t.0
 Westley - https://docs.google.com/document/d/1Tpttas4tEG7jjdJajyxvpcRQkvyYT2gChDd_-4r-E7g/edit?tab=t.0
 Nick - https://docs.google.com/document/d/1_61HE3RPuk8KHhhK9X9Jm4z7j6BNnx8DQzP28jo1m2w/edit?tab=t.0
