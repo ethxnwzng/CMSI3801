@@ -15,3 +15,5 @@ function* powerGenerator(b, expCount) {
 
 
 // node generator.js {number} {limit for summing power}
+
+module.exports = { powerGenerator };

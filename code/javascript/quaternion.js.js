@@ -49,3 +49,4 @@ class Quaternion {
     }
   }
   
+module.exports = { Quaternion };

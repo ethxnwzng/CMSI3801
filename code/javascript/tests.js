@@ -1,4 +1,4 @@
-const { countValidLines } = require("./countValidLines");
+const { countValidLines } = require("./meaningfulLineCount.");
 
 
 (async () => {

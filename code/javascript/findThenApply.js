@@ -6,3 +6,5 @@ function findAndApply(a, p, f) {
     }
     return null; // representation of "non-existence"
   }
+
+  module.exports = { findAndApply };
