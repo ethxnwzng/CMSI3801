@@ -20,4 +20,4 @@ async function countValidLines(filename) {
   return count;
 }
 
-module.exports = { meaningfulLineCount };
+// module.exports = { meaningfulLineCount };
