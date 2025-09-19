@@ -104,5 +104,72 @@ print("Numbers:", result4) -- should be "1 2 3 4 5"
 local result5 = exercises.say("The")("answer")("is")("42")()
 print("Mixed:", result5) -- should be "The answer is 42"
 
+--QUATERNION TESTS:
+
+print("=== Testing Quaternion Implementation ===")
+
+--construction
+print("\n1. Testing Construction:")
+local q1 = exercises.Quaternion.new(1, 2, 3, 4)
+local q2 = exercises.Quaternion.new(2, 3, 4, 5)
+local q_zero = exercises.Quaternion.new(0, 0, 0, 0)
+local q_unit = exercises.Quaternion.new(1, 0, 0, 0)
+
+print("q1 =", tostring(q1))
+print("q2 =", tostring(q2))
+print("q_zero =", tostring(q_zero))
+print("q_unit =", tostring(q_unit))
+
+--addition
+print("\n2. Testing Addition:")
+local q_sum = q1:add(q2)
+print("q1 + q2 =", tostring(q_sum))
+print("Expected: Quaternion(3.00, 5.00, 7.00, 9.00)")
+
+--multiplication
+print("\n3. Testing Multiplication:")
+local q_prod = q1:multiply(q2)
+print("q1 * q2 =", tostring(q_prod))
+
+--multiplication with unit quaternion
+local q_prod_unit = q1:multiply(q_unit)
+print("q1 * unit =", tostring(q_prod_unit))
+print("Should equal q1:", q_prod_unit == q1)
+
+--coefficients
+print("\n4. Testing Coefficients:")
+local coeffs = q1:coefficients()
+print("q1 coefficients:", table.concat(coeffs, ", "))
+print("Expected: 1, 2, 3, 4")
+
+--conjugate
+print("\n5. Testing Conjugate:")
+local q_conj = q1:conjugate()
+print("q1 conjugate =", tostring(q_conj))
+print("Expected: Quaternion(1.00, -2.00, -3.00, -4.00)")
+
+--equality
+print("\n6. Testing Equality:")
+print("q1 == q1:", q1 == q1)
+print("q1 == q2:", q1 == q2)
+print("q1 == q1_copy:", q1 == exercises.Quaternion.new(1, 2, 3, 4))
+
+--string representation
+print("\n7. Testing String Representation:")
+print("String of q1:", tostring(q1))
+print("String of q_zero:", tostring(q_zero))
+
+--weird tests
+print("\n8. Testing Edge Cases:")
+local q_neg = exercises.Quaternion.new(-1, -2, -3, -4)
+print("Negative quaternion:", tostring(q_neg))
+print("q1 + q_neg =", tostring(q1:add(q_neg)))
+
+local q_large = exercises.Quaternion.new(100, 200, 300, 400)
+print("Large quaternion:", tostring(q_large))
+print("q1 + q_large =", tostring(q1:add(q_large)))
+
+print("\n=== All Quaternion Tests Completed ===")
+
 print()
 print("All tests completed!")
