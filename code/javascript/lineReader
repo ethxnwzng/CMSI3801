@@ -1,0 +1,11 @@
+const fs = require("fs");
+
+function countValidLines(filename) {
+  const text = fs.readFileSync(filename, "utf8");
+  const lines = text.split("\n");
+
+  return lines.filter(line => {
+    const trimmed = line.trim();
+    return trimmed.length > 0 && !trimmed.startsWith("#");
+  }).length;
+}
