@@ -1,2 +1,1 @@
-Repo for CMSI3801,
-Members: Ethan Wong, Nick Leeds, Westley Holmes, Matt
+Repo for CMSI3801, for Ethan Wong, Nick Leeds, Westley Holmes, Matt
