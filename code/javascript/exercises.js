@@ -12,45 +12,19 @@ export function firstThenApply(a, p, f) {
 }; // alias expected by tests
 
 
-
-/** meaningfulLineCount: count non-empty, non-whitespace, non-# lines */
-// import fs from "fs";
-// import readline from "readline";
-
-// export async function meaningfulLineCount(filename) {
-//   const fileStream = fs.createReadStream(filename, { encoding: "utf8" });
-
-//   const rl = readline.createInterface({
-//     input: fileStream,
-//     crlfDelay: Infinity // handles both \n and \r\n
-//   });
-
-//   let count = 0;
-//   for await (const line of rl) {
-//     const trimmed = line.trim();
-//     if (trimmed.length > 0 && !trimmed.startsWith("#")) {
-//       count++;
-//     }
-//   }
-
-//   return count;
-// }
-
-
-
 export async function meaningfulLineCount(filename) {
   try {
     const fileStream = fs.createReadStream(filename, { encoding: "utf8" });
 
     const rl = readline.createInterface({
       input: fileStream,
-      // crlfDelay: Infinity,
+      crlfDelay: Infinity,
     });
 
     let count = 0;
     for await (const line of rl) {
       // remove leading whitespace only
-      const trimmed = line.trimStart();
+      const trimmed = line.trim();
 
       // skip if empty after trimming (covers empty + all whitespace lines)
       if (trimmed.length === 0) continue;
@@ -61,6 +35,8 @@ export async function meaningfulLineCount(filename) {
       // otherwise count it
       count++;
     }
+    rl.close();
+    fileStream.close();
 
     return count;
   } catch (err) {
@@ -69,11 +45,6 @@ export async function meaningfulLineCount(filename) {
 }
 
 
-
-
-
-/** powersGenerator: yields b^0, b^1, ... for expCount terms */
-// Yield powers of `ofBase` starting at 1, while <= upTo
 export function* powersGenerator({ ofBase, upTo }) {
   let power = 1;
   while (power <= upTo) {
@@ -82,24 +53,18 @@ export function* powersGenerator({ ofBase, upTo }) {
   }
 }
 
-
-
-
-/** say: chain words; calling with no arg ends and returns quoted string */
 export function say(first) {
   if (first === undefined) return "";
   const parts = [String(first)];
-  function acc(next) {
+  function accumulator(next) {
     if (next === undefined) return parts.join(" ");
     parts.push(String(next));
-    return acc;
+    return accumulator;
   }
-  return acc;
+  return accumulator;
 }
 
 
-
-/** Quaternion */
 export class Quaternion {
   constructor(a = 0, b = 0, c = 0, d = 0) {
     this.a = Number(a);
@@ -108,31 +73,56 @@ export class Quaternion {
     this.d = Number(d);
     Object.freeze(this);
   }
-  add(q) {
-    return new Quaternion(this.a + q.a, this.b + q.b, this.c + q.c, this.d + q.d);
+
+  
+  //coefficients()
+  get coefficients() {
+    return [this.a, this.b, this.c, this.d];
   }
-  mul(q) {
+
+  get conjugate() {
+    return new Quaternion(this.a, -this.b, -this.c, -this.d);
+  }
+  //add
+  plus(q) { return new Quaternion(this.a + q.a, this.b + q.b, this.c + q.c, this.d + q.d); }
+  //mul
+  times(q) {
     const { a, b, c, d } = this;
     const { a: e, b: f, c: g, d: h } = q;
     return new Quaternion(
-      a * e - b * f - c * g - d * h,
-      a * f + b * e + c * h - d * g,
-      a * g - b * h + c * e + d * f,
-      a * h + b * g - c * f + d * e
+      a*e - b*f - c*g - d*h,
+      a*f + b*e + c*h - d*g,
+      a*g - b*h + c*e + d*f,
+      a*h + b*g - c*f + d*e
     );
   }
-  coeffs() { return [this.a, this.b, this.c, this.d]; }
-  conj() { return new Quaternion(this.a, -this.b, -this.c, -this.d); }
-  equals(q, eps = 0) {
-    return (
-      Math.abs(this.a - q.a) <= eps &&
-      Math.abs(this.b - q.b) <= eps &&
-      Math.abs(this.c - q.c) <= eps &&
-      Math.abs(this.d - q.d) <= eps
-    );
-  }
+
+  // Exact equality
+  equals(q) { return this.a === q.a && this.b === q.b && this.c === q.c && this.d === q.d; }
+
   toString() {
-    const s = (coef, sym) => (coef < 0 ? ` - ${Math.abs(coef)} ${sym}` : ` + ${coef} ${sym}`);
-    return `${this.a}${s(this.b, "i")}${s(this.c, "j")}${s(this.d, "k")}`;
+    // All zero
+    if (this.a === 0 && this.b === 0 && this.c === 0 && this.d === 0) return "0";
+  
+    const parts = [];
+  
+    // real first (if present) — plain formatting, no ".0"
+    if (this.a !== 0) parts.push(String(this.a));
+  
+    // helper for i, j, k terms
+    const pushUnit = (coef, unit) => {
+      if (coef === 0) return;
+      const leading = parts.length === 0;
+      const sign = coef < 0 ? "-" : (leading ? "" : "+");
+      const mag = Math.abs(coef);
+      const magStr = (mag === 1) ? "" : String(mag); // omit "1" for unit terms
+      parts.push(`${sign}${magStr}${unit}`);
+    };
+  
+    pushUnit(this.b, "i");
+    pushUnit(this.c, "j");
+    pushUnit(this.d, "k");
+  
+    return parts.join("");
   }
 }
