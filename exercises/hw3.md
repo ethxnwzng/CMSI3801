@@ -39,8 +39,10 @@ b)
 5. What are the major arguments put forward in the article The String Type is Broken?
 
 6. Can you give a type to (λx. (x x))(λx. (x x)) If so, what is it? If not, why not?
-no we cant give this a type because its a self application or omega combinator which a problem with systems types. this is a circular type problem so its like A = A -> B which is not possible.
+No, we cannot give this a type because its a self application or omega combinator which a problem with systems types. This is a circular type problem so its like A = A -> B which is not possible.
+
 7. Represent x ∉ A in function notation.
+λx.¬A(x)
 
 8. What is a pure function? Why do we care about these things?
 a function that always produces the same output for the same input(deterministic), doesnt modify anything outside its scope, and only depends on its parameters. We care about pure functions because they are easier to test, can be safely executed in parallel without race conditions, results can be cached since same input = same output, easy to combine, and have no hidden dependencies or unexpected behavior.
