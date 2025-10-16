@@ -16,8 +16,25 @@ exp _ Zero = Succ Zero
 exp base (Succ n) = mult base (exp base n)
 
 3. (a) Which are the inhabitants of bool+unit? (b) Which are the inhabitants of bool | unit?
+a) 
+left false
+left true
+right ()
+
+b)
+false
+true
+()
+
+
 
 4. (a) Which are the inhabitants of bool x unit (b) Which are the inhabitants of bool -> unit?
+a)
+(true, ())
+(false, ())
+
+b)
+λb.()
 
 5. What are the major arguments put forward in the article The String Type is Broken?
 
