@@ -47,6 +47,8 @@ No, we cannot give this a type because its a self application or omega combinato
 8. What is a pure function? Why do we care about these things?
 a function that always produces the same output for the same input(deterministic), doesnt modify anything outside its scope, and only depends on its parameters. We care about pure functions because they are easier to test, can be safely executed in parallel without race conditions, results can be cached since same input = same output, easy to combine, and have no hidden dependencies or unexpected behavior.
 9. How does Haskell isolate pure and impure code?
+
 through the IO monad. the IO monad type system prevents calling impure functions from pure code, you must explicitly handle IO types to perform side effects. 
+
 10. In TypeScript, which of | or & is closer to the idea of “subclassing” or “inheritance” from Python? Why? (An example will help!)
 & is closer to subclassing/inheritance from python. & combine multiple types into one, giving it all properties fro both types. While | represents either/or relationships.
