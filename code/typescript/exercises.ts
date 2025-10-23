@@ -23,7 +23,7 @@ export function firstThenApply<A, B>(
   }
   
   //async to constantly run function even if lines are being processed
-  // count non empty, non-whitespace
+  //counts non empty, non-whitespace
   export async function meaningfulLineCount(path: string): Promise<number> {
     const text = await readFile(path, { encoding: "utf8" }); //let readFile throw if missing
     const lines = text.split(/\r?\n/);
@@ -108,7 +108,7 @@ export function firstThenApply<A, B>(
     }
     insert(x: T): BinarySearchTree<T> {
       const cmp = this.cmp ?? makeDefaultComparator(x);
-      return new Node<T>(x, new Empty<T>(cmp), new Empty<T>(cmp), cmp);
+      return Node.create(x, new Empty<T>(cmp), new Empty<T>(cmp), cmp);
     }
     *inorder(): Iterable<T> {}
     protected repr(inner: boolean): string {
@@ -116,14 +116,25 @@ export function firstThenApply<A, B>(
     }
   }
   
+  //private class - cannot be instantiated directly to maintain BST property
   class Node<T> extends BinarySearchTree<T> {
-    constructor(
+    private constructor(
       private readonly value: T,
       private readonly left: BinarySearchTree<T>,
       private readonly right: BinarySearchTree<T>,
       private readonly cmp: (a: T, b: T) => number
     ) {
       super();
+    }
+    
+    //method to create nodes -> only accessible with this module
+    static create<T>(
+      value: T,
+      left: BinarySearchTree<T>,
+      right: BinarySearchTree<T>,
+      cmp: (a: T, b: T) => number
+    ): Node<T> {
+      return new Node(value, left, right, cmp);
     }
     size(): number {
       return 1 + this.left.size() + this.right.size();
@@ -137,8 +148,8 @@ export function firstThenApply<A, B>(
     insert(x: T): BinarySearchTree<T> {
       const c = this.cmp(x, this.value);
       if (c === 0) return this; //ignore duplicates
-      if (c < 0) return new Node(this.value, this.left.insert(x), this.right, this.cmp);
-      return new Node(this.value, this.left, this.right.insert(x), this.cmp);
+      if (c < 0) return Node.create(this.value, this.left.insert(x), this.right, this.cmp);
+      return Node.create(this.value, this.left, this.right.insert(x), this.cmp);
     }
     *inorder(): Iterable<T> {
       yield* this.left.inorder();
