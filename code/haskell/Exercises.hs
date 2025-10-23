@@ -1,5 +1,8 @@
 {-# LANGUAGE DeriveFunctor #-}
 
+{- We have to declare our module Exercises here so they can be explicily exported to other modules.
+in our case we're exporting to the test file. we have different types -}
+
 module Exercises (
     -- utilities
     firstThenApply,
