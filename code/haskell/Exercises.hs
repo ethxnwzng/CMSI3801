@@ -61,7 +61,7 @@ meaningfulLineCount = countCodeLines
 data Shape
   = Box { width :: !Double, height :: !Double, depth :: !Double }
   | Sphere { radius :: !Double }
-  deriving (Eq, Show)
+  deriving (Eq)
 
 surfaceArea :: Shape -> Double
 surfaceArea (Box w h d) = 2 * (w*h + w*d + h*d)
@@ -136,3 +136,7 @@ showBST = go
 -- provide a Show instance so 'show' behaves as tests expect
 instance (Show a) => Show (BST a) where
   show = showBST
+
+instance Show Shape where
+  show (Sphere r)  = "Sphere " ++ show r
+  show (Box w h d) = "Box " ++ show w ++ " " ++ show h ++ " " ++ show d
