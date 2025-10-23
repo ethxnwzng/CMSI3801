@@ -1,23 +1,30 @@
 {-# LANGUAGE DeriveFunctor #-}
-module MyLib
-  ( -- utilities
-    firstThenApply
-  , powersOf
-  , countCodeLines
+
+module Exercises (
+    -- utilities
+    firstThenApply,
+    powersOf,
+    powers,                 -- alias expected by tests
+    countCodeLines,
+    meaningfulLineCount,    -- alias expected by tests
 
     -- shapes
-  , Shape(..)
-  , surfaceArea
-  , volume
+    Shape(..),
+    surfaceArea,
+    volume,
 
-    -- persistent BST (type abstract; constructors hidden)
-  , BST
-  , emptyBST
-  , insertBST
-  , lookupBST
-  , countBST
-  , inorderBST
-  , showBST
+    -- persistent BST (export constructors so tests can use Empty)
+    BST(..),
+    emptyBST,
+    insertBST,
+    insert,                 -- alias expected by tests
+    lookupBST,
+    contains,               -- alias expected by tests
+    countBST,
+    size,                   -- alias expected by tests
+    inorderBST,
+    inorder,                -- alias expected by tests
+    showBST
   ) where
 
 import Data.List (find)
@@ -31,7 +38,9 @@ firstThenApply xs p f = f <$> find p xs
 -- Restrict base to Integral; use a section (*b) as hinted.
 powersOf :: (Integral a) => a -> [a]
 powersOf b = iterate (* b) 1
--- Note: (* b) is a section;iterate produces [1, b, b^2, b^3, ...] for Integral b
+-- Alias used by tests
+powers :: (Integral a) => a -> [a]
+powers = powersOf
 
 -- 3) count non-empty, non-whitespace-only, non-# comment lines
 -- Use readFile which auto-closes; propagate exceptions (no catching).
@@ -44,6 +53,9 @@ countCodeLines path = do
           ""    -> False
           (c:_) -> c /= '#'
   return $ length (filter isCodeLine ls)
+-- Alias expected by tests
+meaningfulLineCount :: FilePath -> IO Int
+meaningfulLineCount = countCodeLines
 
 -- 4) Shapes: algebraic data types; value-based equality; immutable by default
 data Shape
@@ -62,9 +74,10 @@ volume (Sphere r)  = (4/3) * pi * r^3
 -- 5) Generic, persistent binary search tree (abstract type exported without constructors)
 -- The BST type is generic over elements of any Ord type.
 data BST a = Empty | Node a (BST a) (BST a)
-  deriving (Functor)
+  deriving (Functor, Eq)
 
 -- Do not export the constructors Empty or Node: BST is abstract to callers of this module.
+-- (We export them above because the test suite expects to construct Empty directly.)
 
 emptyBST :: BST a
 emptyBST = Empty
@@ -76,6 +89,10 @@ insertBST x (Node y l r)
   | x < y     = Node y (insertBST x l) r
   | otherwise = Node y l (insertBST x r)
 
+-- alias expected by tests
+insert :: (Ord a) => a -> BST a -> BST a
+insert = insertBST
+
 lookupBST :: (Ord a) => a -> BST a -> Bool
 lookupBST _ Empty = False
 lookupBST x (Node y l r)
@@ -83,18 +100,39 @@ lookupBST x (Node y l r)
   | x < y     = lookupBST x l
   | otherwise = lookupBST x r
 
+-- alias expected by tests
+contains :: (Ord a) => a -> BST a -> Bool
+contains = lookupBST
+
 countBST :: BST a -> Int
 countBST Empty = 0
 countBST (Node _ l r) = 1 + countBST l + countBST r
+
+-- alias expected by tests
+size :: BST a -> Int
+size = countBST
 
 inorderBST :: BST a -> [a]
 inorderBST Empty = []
 inorderBST (Node x l r) = inorderBST l ++ (x : inorderBST r)
 
--- string description of the tree
+-- alias expected by tests
+inorder :: BST a -> [a]
+inorder = inorderBST
+
+-- string description of the tree expected by tests:
+-- Empty -> "()"
+-- Node: "(" ++ left ++ show x ++ right ++ ")"
+-- where left/right omitted when Empty
 showBST :: (Show a) => BST a -> String
 showBST = go
   where
-    go Empty = "Empty"
+    go Empty = "()"
     go (Node x l r) =
-      "Node " ++ show x ++ " (" ++ go l ++ ") (" ++ go r ++ ")"
+      let ls = case l of { Empty -> ""; _ -> go l }
+          rs = case r of { Empty -> ""; _ -> go r }
+      in "(" ++ ls ++ show x ++ rs ++ ")"
+
+-- provide a Show instance so 'show' behaves as tests expect
+instance (Show a) => Show (BST a) where
+  show = showBST
