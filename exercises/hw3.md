@@ -38,6 +38,8 @@ b)
 
 5. What are the major arguments put forward in the article The String Type is Broken?
 
+Strings are not actually stored as text like many people (including myself) think them to be. It is stored as code points...which can cause issues when doing opperations on the string. The article mentions how noël does not get reversed correctly. The author goes onto talk about how stings also can be misleading if they have accents because the length can be longer than expected. These two go with the bigger point that: string implementations fail to represent and manipulate text in ways that match human expectations or linguistic correctness. The author also talks about how baffle does not uppercase correctly because ffl is a single code point. The author argues that this false sense of reliability makes string types dangerous, since people assume they work intuitively when they don’t or can be misleading.
+
 6. Can you give a type to (λx. (x x))(λx. (x x)) If so, what is it? If not, why not?
 No, we cannot give this a type because its a self application or omega combinator which a problem with systems types. This is a circular type problem so its like A = A -> B which is not possible.
 
