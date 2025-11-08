@@ -27,15 +27,18 @@ public class Exercises {
      * Chainable sentence builder that joins arguments from successive calls.
      * Exposes an 'and' method for adding words and a 'phrase' property for getting the result.
      */
+    // Start a fresh, empty builder to accumulate words.
     public static SayBuilder say() {
         return new SayBuilder(new ArrayList<>());
     }
     
+    // Convenience overload that seeds the builder with the first word.
     public static SayBuilder say(String word) {
         SayBuilder builder = new SayBuilder(new ArrayList<>());
         return builder.and(word);
     }
     
+    // Immutable, chainable helper that captures the current phrase state.
     static class SayBuilder {
         private final List<String> words;
         
@@ -43,12 +46,14 @@ public class Exercises {
             this.words = new ArrayList<>(words);
         }
         
+        // Return a brand-new builder with the additional word appended.
         SayBuilder and(String word) {
             SayBuilder newBuilder = new SayBuilder(words);
             newBuilder.words.add(word);
             return newBuilder;
         }
         
+        // Materialise the accumulated words into a single sentence.
         String phrase() {
             return String.join(" ", words);
         }
@@ -160,8 +165,8 @@ record Quaternion(double a, double b, double c, double d) {
 
 /**
  * Generic, persistent binary search tree of strings.
- * Uses a sealed interface with Empty and Node implementations.
- * Completely immutable and persistent.
+ * This sealed interface is the root of the hierarchy—only {@code Empty} and {@code Node}
+ * are allowed to implement it, which keeps the tree representation well-defined.
  */
 sealed interface BinarySearchTree permits Empty, Node {
     int size();
@@ -169,6 +174,10 @@ sealed interface BinarySearchTree permits Empty, Node {
     BinarySearchTree insert(String x);
 }
 
+/**
+ * Leaf implementation that represents the absence of a value.
+ * Acts as the structural base case from which every real tree grows.
+ */
 final class Empty implements BinarySearchTree {
     @Override
     public int size() {
@@ -182,6 +191,7 @@ final class Empty implements BinarySearchTree {
     
     @Override
     public BinarySearchTree insert(String x) {
+        // Inserting into an empty tree creates the first Node and two empty children.
         return new Node(x, new Empty(), new Empty());
     }
     
@@ -191,6 +201,10 @@ final class Empty implements BinarySearchTree {
     }
 }
 
+/**
+ * Internal tree node: carries a value plus references to left and right subtrees.
+ * Recursively composed of more {@code Node} or {@code Empty} instances to describe the tree.
+ */
 final class Node implements BinarySearchTree {
     private final String value;
     private final BinarySearchTree left;
